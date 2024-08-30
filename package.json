@@ -10,10 +10,15 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {
-    "ts-node": "^10.9.2"
-  },
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
     "ts-node-dev": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.1",
+    "ts-node": "^10.9.2"
   }
 }
