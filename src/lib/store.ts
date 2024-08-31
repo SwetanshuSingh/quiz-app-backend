@@ -1,10 +1,10 @@
-import { User } from "../types";
+import { User } from "../types/user";
 
 export class UserManger {
   private static instance: UserManger;
   private connectedUsers: User[] = [];
 
-  static async getInstance() {
+  static getInstance() {
     if (UserManger.instance) {
       return UserManger.instance;
     }
@@ -13,35 +13,37 @@ export class UserManger {
     return UserManger.instance;
   }
 
-  async addUser(user: User) {
-    const existingUser = await this.getUserById(user.userId);
+  addUser(user: User) {
+    const existingUser = this.getUserById(user.userId);
 
     if (existingUser) {
-      await this.removeUserById(user.userId);
+      this.removeUserById(user.userId);
     }
 
     this.connectedUsers.push(user);
+    console.log(this.connectedUsers);
   }
 
-  async getUser(socketId: string) {
+  getUser(socketId: string) {
     return this.connectedUsers.find((user) => user.socketId === socketId);
   }
 
-  async getUserById(userId: string) {
+  getUserById(userId: string) {
     return this.connectedUsers.find((user) => user.userId === userId);
   }
 
-  async removeUser(socketId: string) {
-    const existingUser = await this.getUser(socketId);
+  removeUser(socketId: string) {
+    const existingUser = this.getUser(socketId);
     if (existingUser) {
       this.connectedUsers = this.connectedUsers.filter(
         (user) => user.socketId !== socketId
       );
     }
+    console.log(this.connectedUsers);
   }
 
-  async removeUserById(userId: string) {
-    const existingUser = await this.getUserById(userId);
+  removeUserById(userId: string) {
+    const existingUser = this.getUserById(userId);
     if (existingUser) {
       this.connectedUsers = this.connectedUsers.filter(
         (user) => user.userId !== userId

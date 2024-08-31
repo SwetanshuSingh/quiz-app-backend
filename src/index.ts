@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import cors from "cors";
+import { userService } from "./services/UserService";
 
 const PORT = 3001;
 const app: Express = express();
@@ -16,7 +17,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("A new user connected:", socket.id);
+  userService(socket);
 });
 
 server.listen(PORT, async () => {
