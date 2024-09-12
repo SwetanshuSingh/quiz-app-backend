@@ -1,9 +1,10 @@
 import { Socket } from "socket.io";
-import { UserManger } from "../lib/store";
+import { GameManager, UserManger } from "../lib/store";
 import { User } from "../types/index";
 
 export const userService = (socket: Socket) => {
   const userManager = UserManger.getInstance();
+  const gameManager = GameManager.getInstance();
 
   socket.on("connection", () => {
     console.log("A new user has connected", socket.id);

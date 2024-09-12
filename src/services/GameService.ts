@@ -1,8 +1,8 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { GameManager, UserManger } from "../lib/store";
 import { GameRoom } from "../types";
 
-export const gameService = (socket: Socket) => {
+export const gameService = (socket: Socket, io: Server) => {
   const gameManager = GameManager.getInstance();
   const userManager = UserManger.getInstance();
 
@@ -49,5 +49,13 @@ export const gameService = (socket: Socket) => {
 
     socket.join(roomId);
     console.log("Game room joined");
+  });
+
+  socket.on("get-game-state", (roomId: string) => {
+    console.log("Received Request");
+    const existingRoom = gameManager.getRoom(roomId);
+    const connectedUsers = existingRoom?.users.length;
+
+    io.to(roomId).emit("game-state", connectedUsers);
   });
 };

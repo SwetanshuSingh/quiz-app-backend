@@ -19,7 +19,7 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   userService(socket);
-  gameService(socket);
+  gameService(socket, io);
 });
 
 server.listen(PORT, async () => {
