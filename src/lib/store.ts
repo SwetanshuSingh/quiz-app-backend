@@ -1,4 +1,4 @@
-import { User } from "../types/user";
+import { GameRoom, User } from "../types/index";
 
 export class UserManger {
   private static instance: UserManger;
@@ -36,7 +36,7 @@ export class UserManger {
     const existingUser = this.getUser(socketId);
     if (existingUser) {
       this.connectedUsers = this.connectedUsers.filter(
-        (user) => user.socketId !== socketId
+        (user) => user.socketId !== socketId,
       );
     }
     console.log(this.connectedUsers);
@@ -46,8 +46,59 @@ export class UserManger {
     const existingUser = this.getUserById(userId);
     if (existingUser) {
       this.connectedUsers = this.connectedUsers.filter(
-        (user) => user.userId !== userId
+        (user) => user.userId !== userId,
       );
     }
+  }
+}
+
+export class GameManager {
+  private static instance: GameManager;
+  private gameRooms: GameRoom[] = [];
+
+  static getInstance() {
+    if (GameManager.instance) {
+      return GameManager.instance;
+    }
+
+    GameManager.instance = new GameManager();
+    return GameManager.instance;
+  }
+
+  addGameRoom(gameRoom: GameRoom) {
+    this.gameRooms.push(gameRoom);
+    console.log(this.gameRooms);
+  }
+
+  removeGameRoom(roomId: string) {
+    const existingRoom = this.getRoom(roomId);
+
+    if (!existingRoom) {
+      return;
+    }
+
+    this.gameRooms = this.gameRooms.filter(
+      (gameRoom) => gameRoom.gameRoomId !== existingRoom.gameRoomId,
+    );
+  }
+
+  getRoom(roomId: string) {
+    return this.gameRooms.find((gameRoom) => gameRoom.gameRoomId === roomId);
+  }
+
+  addUserToRoom(roomId: string, userId: string) {
+    const existingRoom = this.getRoom(roomId);
+
+    if (!existingRoom) {
+      return;
+    }
+
+    const updatedRoomDetails: GameRoom = {
+      ...existingRoom,
+      users: [...existingRoom.users, userId],
+    };
+
+    this.removeGameRoom(roomId);
+    this.addGameRoom(updatedRoomDetails);
   }
 }

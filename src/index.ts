@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { Server } from "socket.io";
 import cors from "cors";
 import { userService } from "./services/UserService";
+import { gameService } from "./services/GameService";
 
 const PORT = 3001;
 const app: Express = express();
@@ -18,6 +19,7 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   userService(socket);
+  gameService(socket);
 });
 
 server.listen(PORT, async () => {

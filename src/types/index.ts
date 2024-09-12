@@ -3,3 +3,8 @@ export type User = {
   userId: string;
   socketId: string;
 };
+
+export type GameRoom = {
+  gameRoomId: string;
+  users: string[];
+};
