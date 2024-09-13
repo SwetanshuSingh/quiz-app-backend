@@ -18,7 +18,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  userService(socket);
+  userService(socket, io);
   gameService(socket, io);
 });
 

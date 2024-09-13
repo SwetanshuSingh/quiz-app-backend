@@ -101,4 +101,24 @@ export class GameManager {
     this.removeGameRoom(roomId);
     this.addGameRoom(updatedRoomDetails);
   }
+
+  removeUserFromRoom(roomId: string, userId: string) {
+    const existingRoom = this.getRoom(roomId);
+
+    if (!existingRoom) {
+      return;
+    }
+
+    const updatedRoomDetails: GameRoom = {
+      ...existingRoom,
+      users: existingRoom.users.filter((user) => user !== userId),
+    };
+
+    this.removeGameRoom(roomId);
+    this.addGameRoom(updatedRoomDetails);
+  }
+
+  getRoomByUserId(userId: string) {
+    return this.gameRooms.find((gameRoom) => gameRoom.users.includes(userId));
+  }
 }
