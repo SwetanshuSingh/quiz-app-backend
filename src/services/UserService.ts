@@ -6,10 +6,6 @@ export const userService = (socket: Socket, io: Server) => {
   const userManager = UserManger.getInstance();
   const gameManager = GameManager.getInstance();
 
-  socket.on("connection", () => {
-    console.log("A new user has connected", socket.id);
-  });
-
   socket.on("new-user", (data, callback) => {
     const userData: User = {
       ...data,
@@ -18,6 +14,7 @@ export const userService = (socket: Socket, io: Server) => {
     };
 
     userManager.addUser(userData);
+
     callback({
       status: "success",
     });
@@ -25,13 +22,22 @@ export const userService = (socket: Socket, io: Server) => {
 
   socket.on("disconnect", () => {
     const joinedRoom = gameManager.getRoomByUserId(socket.id);
+
     if (!joinedRoom) {
       userManager.removeUser(socket.id);
       return;
     }
+
     gameManager.removeUserFromRoom(joinedRoom.gameRoomId, socket.id);
+    socket.leave(joinedRoom.gameRoomId);
+
     const roomData = gameManager.getRoom(joinedRoom.gameRoomId);
-    userManager.removeUser(socket.id);
+    if (roomData?.users.length === 0) {
+      gameManager.removeGameRoom(roomData.gameRoomId);
+      return;
+    }
+
     io.to(joinedRoom.gameRoomId).emit("game-state", roomData?.users.length);
+    userManager.removeUser(socket.id);
   });
 };
