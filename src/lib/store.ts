@@ -21,7 +21,7 @@ export class UserManger {
     }
 
     this.connectedUsers.push(user);
-    console.log(this.connectedUsers);
+    return this.connectedUsers;
   }
 
   getUser(socketId: string) {
@@ -36,19 +36,20 @@ export class UserManger {
     const existingUser = this.getUser(socketId);
     if (existingUser) {
       this.connectedUsers = this.connectedUsers.filter(
-        (user) => user.socketId !== socketId,
+        (user) => user.socketId !== socketId
       );
     }
-    console.log(this.connectedUsers);
+    return this.connectedUsers;
   }
 
   removeUserById(userId: string) {
     const existingUser = this.getUserById(userId);
     if (existingUser) {
       this.connectedUsers = this.connectedUsers.filter(
-        (user) => user.userId !== userId,
+        (user) => user.userId !== userId
       );
     }
+    return this.connectedUsers;
   }
 }
 
@@ -67,7 +68,7 @@ export class GameManager {
 
   addGameRoom(gameRoom: GameRoom) {
     this.gameRooms.push(gameRoom);
-    console.log(this.gameRooms);
+    return this.gameRooms;
   }
 
   removeGameRoom(roomId: string) {
@@ -78,8 +79,9 @@ export class GameManager {
     }
 
     this.gameRooms = this.gameRooms.filter(
-      (gameRoom) => gameRoom.gameRoomId !== existingRoom.gameRoomId,
+      (gameRoom) => gameRoom.gameRoomId !== existingRoom.gameRoomId
     );
+    return this.gameRooms;
   }
 
   getRoom(roomId: string) {
@@ -100,6 +102,7 @@ export class GameManager {
 
     this.removeGameRoom(roomId);
     this.addGameRoom(updatedRoomDetails);
+    return updatedRoomDetails;
   }
 
   removeUserFromRoom(roomId: string, userId: string) {
@@ -116,6 +119,7 @@ export class GameManager {
 
     this.removeGameRoom(roomId);
     this.addGameRoom(updatedRoomDetails);
+    return updatedRoomDetails;
   }
 
   getRoomByUserId(userId: string) {
