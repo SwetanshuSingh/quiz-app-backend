@@ -1,0 +1,22 @@
+name: Discord Notification on Issue Creation
+
+on:
+  issues:
+    types: [opened] # Trigger only on issue creation
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if issue is created by me
+        if: github.event.issue.user.login == 'SwetanshuSingh' # Replace with your GitHub username
+        run: |
+          echo "Issue created by me, sending notification to Discord."
+
+      - name: Send message to Discord
+        if: github.event.issue.user.login == 'SwetanshuSingh' # Replace with your GitHub username
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\": \"An issue has been created : ${GITHUB_EVENT_PATH}\"}" \
+            ${{ secrets.DISCORD_WEBHOOK_URL }} # Webhook URL stored in repository secrets
