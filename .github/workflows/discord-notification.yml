@@ -2,7 +2,7 @@ name: Discord Notification on Issue Creation
 
 on:
   issues:
-    types: [opened] # Trigger only on issue creation
+    types: [opened]
 
 jobs:
   notify-discord:
@@ -10,11 +10,11 @@ jobs:
 
     steps:
       - name: Check if issue is created by me
-        if: github.event.issue.user.login == 'SwetanshuSingh' # Replace with your GitHub username
+        if: github.event.issue.user.login == 'SwetanshuSingh'
         run: echo "Issue created by me, proceeding to send notification to Discord."
 
       - name: Send message to Discord
-        if: github.event.issue.user.login == 'SwetanshuSingh' # Replace with your GitHub username
+        if: github.event.issue.user.login == 'SwetanshuSingh'
         run: |
           issue_number=$(jq '.issue.number' $GITHUB_EVENT_PATH)
           issue_title=$(jq -r '.issue.title' $GITHUB_EVENT_PATH)
